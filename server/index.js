@@ -1,10 +1,12 @@
 require('dotenv').config();
 const express = require('express');
 const sequelize = require('./db');
-//const models = require('./models/models');
+const models = require('./models/models');
 const cors = require('cors');
+const fileupload = require('express-fileupload');
 const router = require('./routes/index');
-const errorHandler = require('./middleware/errorHandler')
+const errorHandler = require('./middleware/errorHandler');
+const path = require('path');
 
 const PORT = process.env.PORT || 5000;
 
@@ -16,6 +18,10 @@ const app = express();
 app.use(cors())
 //для работы с json форматом
 app.use(express.json())
+//для открытия файлов по строке запроса
+app.use(express.static(path.resolve(__dirname, 'static')))
+//для работы с файлами
+app.use(fileupload({}))
 //для работы с маршрутами
 app.use('/api', router)
 

@@ -3,3 +3,5 @@
 Server:
 npm install express pg pg-hstore sequelize cors dotenv
 npm install -D nodemon
+npm i express-fileupload
+npm i uuid
