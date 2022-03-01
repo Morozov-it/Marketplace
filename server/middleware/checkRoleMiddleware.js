@@ -1,11 +1,9 @@
 const jwt = require("jsonwebtoken");
 
-//на эекспорт функция для проверки токена и сохранении из него данных в запросе
-module.exports = function (role) {
+//на экспорт функция для проверки токена и сохранении из него данных в запросе
+module.exports.max = function (role) {
     return function (req, res, next) {
-        if (req.method === "OPTIONS") {
-            next()
-        }
+        if (req.method === "OPTIONS") next();
         try {
             const token = req.headers.authorization.split(' ')[1] //Bearer token
             if (!token) {
@@ -25,6 +23,23 @@ module.exports = function (role) {
             //следующая функция
             next()
         } catch (e) {
+            res.status(401).json({message: "Authorization error "})
+        }
+    }
+}
+
+//только после проверки авторизации
+module.exports.min = function (role) {
+    return function (req, res, next) {
+        if (req.method === "OPTIONS") next();
+        try {
+            //проверка роли пользователя
+            if (req.user.role !== role) {
+                return res.status(403).json({message: "You have no access"})
+            }
+            next()
+        }
+        catch (e) {
             res.status(401).json({message: "Authorization error "})
         }
     }
