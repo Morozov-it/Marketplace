@@ -9,3 +9,4 @@ npm i jsonwebtoken bcrypt
 
 Front:
 npm i axios react-router-dom mobx mobx-react-lite
+npm install react-bootstrap bootstrap@5.1.3
