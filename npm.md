@@ -6,3 +6,6 @@ npm install -D nodemon
 npm i express-fileupload
 npm i uuid
 npm i jsonwebtoken bcrypt
+
+Front:
+npm i axios react-router-dom mobx mobx-react-lite
