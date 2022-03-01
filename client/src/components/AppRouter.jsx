@@ -1,12 +1,14 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useData } from '../index';
 import {authRoutes, publicRoutes} from '../routes'
 
 const AppRouter = () => {
-    const isAuth = true;
+    const { user } = useData();
+    //console.log(user)
     return (
         <Routes>
-            {isAuth && authRoutes.map(({ path, element }) =>
+            {user.isAuth && authRoutes.map(({ path, element }) =>
                 <Route key={path} path={path} element={element} />
             )}
             {publicRoutes.map(({ path, element }) =>
