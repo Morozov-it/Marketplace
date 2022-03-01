@@ -12,7 +12,7 @@ const generateJWT = (id, email, role) => {
 }
 
 class UserController {
-    async registration(req, res) {
+    async registration(req, res, next) {
         //получение рег.данных из тела запроса
         const { email, password, role } = req.body;
         
@@ -37,22 +37,38 @@ class UserController {
 
         //создание токена для пользователя
         const token = generateJWT(user.id, user.email, user.role);//role: default "USER"
-        
+
         //возврат токена на клиент
         return res.json({token})
     }
 
-    async login(req, res) {
+    async login(req, res, next) {
+        //получение auth.данных из тела запроса
+        const { email, password } = req.body;
 
+        //проверка email пользователя
+        const user = await User.findOne({ where: { email } });
+        if (!user) {
+            return next(ApiError.internal("User is not found"))
+        }
+
+        //проверка password пользователя
+        let comparePassword = bcrypt.compareSync(password, user.password)
+        if (!comparePassword) {
+            return next(ApiError.internal("Password is incorrect"))
+        }
+
+        //создание токена для пользователя
+        const token = generateJWT(user.id, user.email, user.role);
+
+        //возврат токена на клиент
+        return res.json({token})
     }
 
-    async check(req, res, next) {
-        const { id } = req.query
-        if (!id) {
-            //получение ошибки и выход из функции
-            return next(ApiError.badRequest("Id is'not got"))
-        }
-        res.json(id)
+    async check(req, res) {
+        //создание токена для пользователя
+        const token = generateJWT(req.user.id, req.user.email, req.user.role);
+        return res.json({token})
     }
 }
 
