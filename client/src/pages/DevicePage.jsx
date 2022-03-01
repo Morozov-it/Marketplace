@@ -1,8 +1,11 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container';
 
 const DevicePage = () => {
     return (
-        <div>DevicePage</div>
+        <Container>
+            <div>DevicePage</div>
+        </Container>
     )
 }
 export default React.memo(DevicePage);

@@ -1,8 +1,11 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container';
 
 const Basket = () => {
     return (
-        <div>Basket</div>
+        <Container>
+            <div>Basket</div>
+        </Container>
     )
 }
 export default React.memo(Basket);

@@ -1,8 +1,11 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container';
 
 const Shop = () => {
     return (
-        <div>Shop</div>
+        <Container>
+            <div>Shop</div>
+        </Container>
     )
 }
 export default React.memo(Shop);

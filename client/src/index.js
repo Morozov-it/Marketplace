@@ -7,7 +7,7 @@ import DeviceStore from './store/DeviceStore';
 
 //hook для получения данных из контекста
 const Context = createContext()
-export const useData = () => useContext(Context)
+export const useStore = () => useContext(Context)
 
 ReactDOM.render(
   <Context.Provider value={{

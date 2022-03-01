@@ -1,9 +1,12 @@
-import Admin from './pages/Admin';
-import Auth from './pages/Auth';
-import Basket from './pages/Basket';
-import Shop from './pages/Shop';
-import DevicePage from './pages/DevicePage';
+import { lazy } from 'react';
 import { ADMIN_ROUTE, BASKET_ROUTE, DEVICE_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from './utils/const';
+
+const Admin = lazy(() => import('./pages/Admin'));
+const Auth = lazy(() => import('./pages/Auth'));
+const Basket = lazy(() => import('./pages/Basket'));
+const Shop = lazy(() => import('./pages/Shop'));
+const DevicePage = lazy(() => import('./pages/DevicePage'));
+
 
 
 export const authRoutes = [
