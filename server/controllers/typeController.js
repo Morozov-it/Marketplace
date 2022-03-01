@@ -5,7 +5,7 @@ const { Type } = require('../models/models');
 class TypeController {
     //функция создания типа
     async create(req, res) {
-        //получение типа из строки запроса
+        //получение типа из тела запроса
         const { name } = req.body;
         //сохранение типа в бд
         const type = await Type.create({ name });
