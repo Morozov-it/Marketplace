@@ -6,12 +6,6 @@ import { useStore } from '../index';
 import { ADMIN_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from '../utils/const';
 
 
-const style = {
-    navlink: {
-        cursor: "pointer"
-    }
-}
-
 const Navbar = observer(() => {
     let navigate = useNavigate();
     const { user } = useStore()
@@ -19,7 +13,7 @@ const Navbar = observer(() => {
         <NavbarBootstrap bg="primary" variant="dark">
             <Container>
                 <NavbarBootstrap.Brand
-                    style={style.navlink}
+                    style={{ cursor: "pointer" }}
                     onClick={() => navigate(SHOP_ROUTE)}>Marketplace
                 </NavbarBootstrap.Brand>
                 <Nav className="ml-auto">

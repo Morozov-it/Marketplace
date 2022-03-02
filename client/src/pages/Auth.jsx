@@ -20,7 +20,7 @@ const Auth = () => {
                 <h2 className='m-auto'>
                     {isLogin ? 'Log in' : 'Sign up'}
                 </h2>
-                <Form className='d-flex flex-column'>
+                <Form autoComplete="off" className='d-flex flex-column'>
                     <Form.Group className="mb-3">
                         <Form.Label>Email</Form.Label>
                         <Form.Control type="email" placeholder="enter email" />
