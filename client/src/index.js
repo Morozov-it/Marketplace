@@ -9,6 +9,8 @@ import DeviceStore from './store/DeviceStore';
 const Context = createContext()
 export const useStore = () => useContext(Context)
 
+console.log(process.env)
+
 ReactDOM.render(
   <Context.Provider value={{
     user: new UserStore(),

@@ -3,7 +3,7 @@ import { makeAutoObservable } from 'mobx';
 export default class UserStore {
     //конструктор вызывается при создании нового объекта этого класса
     constructor() {
-        this._isAuth = true
+        this._isAuth = false
         this._user = {}
         //параметром передается объект контекста this
         makeAutoObservable(this)
