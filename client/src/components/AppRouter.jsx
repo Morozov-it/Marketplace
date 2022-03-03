@@ -1,10 +1,12 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useStore } from '../index';
+import { observer } from 'mobx-react-lite';
 import {authRoutes, publicRoutes} from '../routes'
 import Spinner from './Spinner';
 
-const AppRouter = () => {
+
+const AppRouter = observer(() => {
     const { user } = useStore();
     
     return (
@@ -20,5 +22,6 @@ const AppRouter = () => {
             </Routes>
         </Suspense>
     )
-}
+})
+
 export default AppRouter;

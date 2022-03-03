@@ -17,14 +17,18 @@ const Navbar = observer(() => {
                     onClick={() => navigate(SHOP_ROUTE)}>Marketplace
                 </NavbarBootstrap.Brand>
                 <Nav className="ml-auto">
-                    <Nav.Link
-                        onClick={() => navigate(ADMIN_ROUTE)}>Admin
-                    </Nav.Link>
+                    {user.user.role === "ADMIN" &&
+                        <Nav.Link
+                            onClick={() => navigate(ADMIN_ROUTE)}>EDIT SHOP
+                        </Nav.Link>
+                    }
                     <Nav.Link
                         onClick={() => {
                             navigate(LOGIN_ROUTE)
                         }}>
-                        {user.isAuth ? "Log out" : "Log in"}
+                        {user.isAuth ?
+                            <span>{user.user.email}</span>
+                            : "Log in"}
                     </Nav.Link>
                 </Nav>
             </Container>
