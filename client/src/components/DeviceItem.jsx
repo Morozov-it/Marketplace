@@ -18,7 +18,7 @@ const DeviceItem = ({ device }) => {
                 className='p-1'
                 style={{ cursor: 'pointer', height: '100%' }}>
                 <div className='image' style={{flex: '1 1 auto'}}>
-                    <img src={process.env.REACT_APP_URL + device.img} />
+                    <img alt='img' src={process.env.REACT_APP_URL + device.img} />
                 </div>
                 <div className='d-flex justify-content-between align-items-center'>
                     <div>{device.name}</div>

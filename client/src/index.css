@@ -15,10 +15,22 @@ body {
   width: 100%;
   height: 100%;
 }
+.spiner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.1);
+}
 .error {
   width: 100%;
   margin-top: 0.25rem;
-  font-size: .875em;
+  font-size: 1em;
   color: #dc3545;
 }
 .image img {

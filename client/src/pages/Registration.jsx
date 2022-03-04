@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useStore } from '../index';
 import { NavLink } from 'react-router-dom';
 import { LOGIN_ROUTE } from '../utils/const';
 import { registration } from '../http/userAPI';
@@ -8,18 +9,19 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import Spinner from '../components/Spinner';
 
 
-const Auth = observer(() => {
+const Registration = observer(() => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [loading, setLoading] = useState(false)
     const [isError, setIsError] = useState('')
+
+    //получение данных из store
+    const { load } = useStore();
 
     const submit = async () => {
         try {
-            setLoading(true);
+            load.setLoading(true);
             const { decodeUser } = await registration(email, password);
             setIsError('');
             alert(`User ${decodeUser.email} was created, you can: 
@@ -28,12 +30,8 @@ const Auth = observer(() => {
         } catch (e) {
             setIsError(e.response.data.message);
         } finally {
-            setLoading(false);
+            load.setLoading(false);
         }
-    }
-
-    if (loading) {
-        return <Spinner />
     }
 
     return (
@@ -81,4 +79,4 @@ const Auth = observer(() => {
     )
 })
 
-export default React.memo(Auth);
+export default React.memo(Registration);

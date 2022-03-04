@@ -17,10 +17,11 @@ const Login = observer(() => {
     const [password, setPassword] = useState('')
 
     //подключение к store
-    const { user } = useStore()
+    const { user, load } = useStore()
 
     const submit = async () => {
         try {
+            load.setLoading(true);
             const { decodeUser } = await login(email, password);
             user.setIsError('');
             user.setUser(decodeUser);
@@ -28,6 +29,8 @@ const Login = observer(() => {
             navigate(SHOP_ROUTE);
         } catch (e) {
             user.setIsError(e.response.data.message)
+        } finally {
+            load.setLoading(false);
         }
     }
 

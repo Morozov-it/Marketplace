@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+
 import ModalType from '../components/modals/ModalType';
 import ModalBrand from '../components/modals/ModalBrand';
 import ModalDevice from '../components/modals/ModalDevice';

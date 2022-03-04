@@ -1,30 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
+import { observer } from 'mobx-react-lite';
 import { useStore } from '../index';
+import { fetchOneDevice } from '../http/deviceAPI';
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import Image from 'react-bootstrap/Image';
 import Card from 'react-bootstrap/Card';
 
 import Rating from '../components/Rating';
 
-const description = [
-    { id: 1, title: 'Memory', description: '5 gb' },
-    { id: 2, title: 'Camera', description: '120 px' },
-    { id: 3, title: 'Proc', description: '7 core' },
-    { id: 4, title: 'Accum', description: '4200 mA' },
-]
 
-const DevicePage = () => {
+const DevicePage = observer(() => {
+    //данные из URL строки
     let { id } = useParams();
-    const { device } = useStore()
-    const item = device.devices[0]
-    console.log(id)
+
+    //подключение к Store
+    const { device, load } = useStore();
+
+    //состояние для страницы
+    const [item, setItem] = useState({ info: [] })
+
+    //функция получения данных от сервера
+    async function fetchDevice() {
+        try {
+            load.setLoading(true);
+            const device = await fetchOneDevice(id);
+            setItem(device);
+        } catch (e) {
+            device.setIsError(e.response.data.message)
+        } finally {
+            load.setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchDevice()
+
+        //стадия willUnmount
+        return () => {
+            setItem({ info: [] })
+        }
+    }, [id])
 
     return (
         <Container>
+            {device.isError && <div className='error'>{device.isError}</div>}
             <Row className='p-1'>
                 <Col md={6}>
                     <div className='d-flex justify-content-start align-items-center gap-2'>
@@ -45,13 +68,16 @@ const DevicePage = () => {
             <Row className='p-1'>
                 <Col md={6}>
                     <Card>
-                        <Image src={item.img} />
+                        <div className='image'>
+                            <img alt='img'
+                                src={process.env.REACT_APP_URL + item.img} />
+                        </div>
                     </Card>
                 </Col>
                 <Col md={6}>
                     <h4>Description</h4>
                     <Card className='d-flex flex-column p-1'>
-                        {description.map((info, index) =>
+                        {item.info.map((info, index) =>
                             <div
                                 style={{
                                     background: index % 2 === 0 ? 'lightgray' : 'transparent',
@@ -66,5 +92,6 @@ const DevicePage = () => {
             </Row>
         </Container>
     )
-}
-export default React.memo(DevicePage);
+})
+
+export default DevicePage;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useStore } from './index';
@@ -10,10 +10,7 @@ import Spinner from './components/Spinner';
 
 const App = observer(() => {
   //подключение к userStore
-  const { user } = useStore()
-
-  //состояние для loader
-  const [loading, setLoading] = useState(true)
+  const { user, load } = useStore()
 
   //проверка авторизации при первой загрузке 
   async function checkAuth() {
@@ -26,7 +23,7 @@ const App = observer(() => {
       //user.setIsError(e.response.data.message)
       console.log(e.response.data.message)
     } finally {
-      setLoading(false)
+      load.setLoading(false)
     }
   }
 
@@ -34,12 +31,9 @@ const App = observer(() => {
     checkAuth()
   }, [])
 
-  if (loading) {
-    return <Spinner />
-  }
-
   return (
     <BrowserRouter>
+      {load.loading &&  <Spinner />}
       <Navbar />
       <AppRouter />
     </BrowserRouter>
