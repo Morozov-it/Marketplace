@@ -11,7 +11,6 @@ import GlobalStore from './store/GlobalStore';
 const Context = createContext()
 export const useStore = () => useContext(Context)
 
-console.log(process.env)
 
 ReactDOM.render(
   <Context.Provider value={{

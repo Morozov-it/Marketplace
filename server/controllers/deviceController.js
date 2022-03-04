@@ -3,6 +3,7 @@ const path = require('path');
 const ApiError = require("../error/apiError");
 const { Device, DeviceInfo } = require('../models/models');
 
+
 class DeviceController {
     //функция создания нового девайса
     async create(req, res, next) {
@@ -31,7 +32,6 @@ class DeviceController {
                     })
                 });
             }
-
             //возврат клиенту созданного девайса
             return res.json(device)
         } catch (e) {
@@ -41,41 +41,49 @@ class DeviceController {
 
     //функция получения всех девайсов
     async getAll(req, res) {
-        //для сортировки и пагинации получаем из параметров строки запроса
-        let { brandId, typeId, limit, page } = req.query;
-        page = page || 1;
-        limit = limit || 10;
-        let offset = page * limit - limit;
+        try {
+            //для сортировки и пагинации получаем из параметров строки запроса
+            let { brandId, typeId, limit, page } = req.query;
+            page = page || 1;
+            limit = limit || 10;
+            let offset = page * limit - limit;
 
-        let devices;
-        if (!brandId && !typeId) {
-            devices = await Device.findAndCountAll({limit, offset});
+            let devices;
+            if (!brandId && !typeId) {
+                devices = await Device.findAndCountAll({limit, offset});
+            }
+            if (brandId && !typeId) {
+                devices = await Device.findAndCountAll({ where: { brandId }, limit, offset})
+            }
+            if (!brandId && typeId) {
+                devices = await Device.findAndCountAll({ where: { typeId }, limit, offset})
+            }
+            if (brandId && typeId) {
+                devices = await Device.findAndCountAll({ where: { typeId, brandId }, limit, offset})
+            }
+            //возвращаем сортированный массив
+            return res.json(devices)
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
         }
-        if (brandId && !typeId) {
-            devices = await Device.findAndCountAll({where: {brandId, limit, offset}})
-        }
-        if (!brandId && typeId) {
-            devices = await Device.findAndCountAll({where: {typeId, limit, offset}})
-        }
-        if (brandId && typeId) {
-            devices = await Device.findAndCountAll({where: {typeId, brandId, limit, offset}})
-        }
-        //возвращаем сортированный массив
-        return res.json(devices)
     }
 
     //функция получение конкретного девайса
     async getOne(req, res) {
-        //получаем id из объекта параметров
-        const { id } = req.params;
-        const device = await Device.findOne({
-            where: { id },
-            //включая массив характеристик
-            include: [{model: DeviceInfo, as: 'info'}]
-        })
+        try {
+            //получаем id из объекта параметров
+            const { id } = req.params;
+            const device = await Device.findOne({
+                where: { id },
+                //включая массив характеристик
+                include: [{model: DeviceInfo, as: 'info'}]
+            })
 
-        //возврат клиенту девайс с характеристиками
-        return res.json(device)
+            //возврат клиенту девайс с характеристиками
+            return res.json(device)
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
     }
 }
 

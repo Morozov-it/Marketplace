@@ -8,6 +8,10 @@ export default class DeviceStore {
         this._devices = []
         this._selectedType = {}
         this._selectedBrand = {}
+        this._limit = 4
+        this._totalCount = 0
+        this._selectedPage = 1
+        this._pages = 0
         //параметром передается объект контекста this
         makeAutoObservable(this)
     }
@@ -23,10 +27,21 @@ export default class DeviceStore {
         this._devices = devices
     }
     setSelectedType(type) {
+        this.setSelectedPage(1)
         this._selectedType = type
     }
     setSelectedBrand(brand) {
+        this.setSelectedPage(1)
         this._selectedBrand = brand
+    }
+    setLimit(limit) {
+        this._limit = limit
+    }
+    setTotalCount(count) {
+        this._totalCount = count
+    }
+    setSelectedPage(page) {
+        this._selectedPage = page
     }
 
     //геттеры для получения переменных из состояния, вызываются только если указанная переменная была изменена
@@ -44,5 +59,14 @@ export default class DeviceStore {
     }
     get selectedBrand() {
         return this._selectedBrand
+    }
+    get limit() {
+        return this._limit
+    }
+    get selectedPage() {
+        return this._selectedPage
+    }
+    get pages() {
+        return Math.ceil(this._totalCount / this._limit)
     }
 }
