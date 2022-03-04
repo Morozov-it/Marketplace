@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite';
 import { useStore } from './index';
 import { check } from './http/userAPI';
 
-import './App.css';
 import AppRouter from './components/AppRouter';
 import Navbar from './components/Navbar';
 import Spinner from './components/Spinner';

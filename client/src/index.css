@@ -21,3 +21,7 @@ body {
   font-size: .875em;
   color: #dc3545;
 }
+.image img {
+  max-width: 100%;
+  display: block;
+}
