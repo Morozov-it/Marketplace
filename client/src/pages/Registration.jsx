@@ -14,23 +14,22 @@ import Button from 'react-bootstrap/Button';
 const Registration = observer(() => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [isError, setIsError] = useState('')
 
     //получение данных из store
-    const { load } = useStore();
+    const { global } = useStore();
 
     const submit = async () => {
         try {
-            load.setLoading(true);
+            global.setErrorRegistration('');
+            global.setLoading(true);
             const { decodeUser } = await registration(email, password);
-            setIsError('');
             alert(`User ${decodeUser.email} was created, you can: 
             1) log in and go to shop
             2) create a new user`);
         } catch (e) {
-            setIsError(e.response.data.message);
+            global.setErrorRegistration(e.response.data.message);
         } finally {
-            load.setLoading(false);
+            global.setLoading(false);
         }
     }
 
@@ -57,8 +56,8 @@ const Registration = observer(() => {
                             placeholder="password" />
                     </Form.Group>
 
-                    {isError && <div className="error">
-                        {isError}
+                    {global.errorRegistration && <div className="error">
+                        {global.errorRegistration}
                     </div>}
 
                     <Form.Group

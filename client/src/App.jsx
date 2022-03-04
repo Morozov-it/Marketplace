@@ -10,20 +10,18 @@ import Spinner from './components/Spinner';
 
 const App = observer(() => {
   //подключение к userStore
-  const { user, load } = useStore()
+  const { user, global } = useStore()
 
   //проверка авторизации при первой загрузке 
   async function checkAuth() {
     try {
       const { decodeUser } = await check();
-      user.setIsError('');
       user.setUser(decodeUser);
       user.setIsAuth(true);
     } catch (e) {
-      //user.setIsError(e.response.data.message)
-      console.log(e.response.data.message)
+      global.setErrorAuth(e.response.data.message);
     } finally {
-      load.setLoading(false)
+      global.setLoading(false)
     }
   }
 
@@ -33,7 +31,8 @@ const App = observer(() => {
 
   return (
     <BrowserRouter>
-      {load.loading &&  <Spinner />}
+      {global.loading && <Spinner />}
+      {global.errorAuth && <div className='error'>{global.errorAuth}</div>}
       <Navbar />
       <AppRouter />
     </BrowserRouter>

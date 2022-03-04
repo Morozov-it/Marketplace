@@ -8,7 +8,6 @@ export default class DeviceStore {
         this._devices = []
         this._selectedType = null
         this._selectedBrand = null
-        this._isError = ''
         //параметром передается объект контекста this
         makeAutoObservable(this)
     }
@@ -29,9 +28,6 @@ export default class DeviceStore {
     setSelectedBrand(id) {
         this._selectedBrand = id
     }
-    setIsError(error) {
-        this._isError = error
-    }
 
     //геттеры для получения переменных из состояния, вызываются только если указанная переменная была изменена
     get types() {
@@ -48,8 +44,5 @@ export default class DeviceStore {
     }
     get selectedBrand() {
         return this._selectedBrand
-    }
-    get isError() {
-        return this._isError
     }
 }

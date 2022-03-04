@@ -13,12 +13,12 @@ import { fetchBrands, fetchDevices, fetchTypes } from '../http/deviceAPI';
 
 const Shop = observer(() => {
     //получение данных из store
-    const { device, load } = useStore();
+    const { device, global } = useStore();
 
     //функция сохранения данных от сервера в store
     async function fetchData() { 
         try {
-            load.setLoading(true);
+            global.setLoading(true);
             const types = await fetchTypes();
             device.setTypes(types);
             const brands = await fetchBrands();
@@ -26,9 +26,9 @@ const Shop = observer(() => {
             const {count, rows} = await fetchDevices();
             device.setDevices(rows);
         } catch (e) {
-            device.setIsError(e.response.data.message)
+            global.setErrorShop(e.response.data.message)
         } finally {
-            load.setLoading(false);
+            global.setLoading(false);
         }
     }
 
@@ -39,7 +39,7 @@ const Shop = observer(() => {
 
     return (
         <Container>
-            {device.isError && <div className='error'>{device.isError}</div>}
+            {global.errorShop && <div className='error'>{global.errorShop}</div>}
             <Row>
                 <Col md={3}>
                     <TypeBar />

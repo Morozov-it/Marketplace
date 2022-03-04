@@ -3,14 +3,16 @@ const { Brand } = require('../models/models');
 
 class BrandController {
     //функция создания бренда
-    async create(req, res) {
+    async create(req, res, next) {
         //получение типа из строки запроса
         const { name } = req.body;
-        //проверка наличия бренда в запросе
-        if (!name) {
-            //получение ошибки и выход из функции
-            return next(ApiError.badRequest("Name is'not received"))
+
+        //проверка существующего бренда
+        const current = await Brand.findOne({ where: { name } });
+        if (current) {
+            return next(ApiError.badRequest("This brand is already existed"))
         }
+
         //сохранение типа в бд
         const brand = await Brand.create({ name });
         return res.json(brand)

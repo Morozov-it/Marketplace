@@ -5,7 +5,7 @@ import App from './App';
 
 import UserStore from './store/UserStore';
 import DeviceStore from './store/DeviceStore';
-import LoaderStore from './store/LoaderStore';
+import GlobalStore from './store/GlobalStore';
 
 //hook для получения данных из контекста
 const Context = createContext()
@@ -17,7 +17,7 @@ ReactDOM.render(
   <Context.Provider value={{
     user: new UserStore(),
     device: new DeviceStore(),
-    load: new LoaderStore()
+    global: new GlobalStore()
   }}>
     <App />
   </Context.Provider>,

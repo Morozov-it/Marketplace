@@ -17,24 +17,25 @@ const Login = observer(() => {
     const [password, setPassword] = useState('')
 
     //подключение к store
-    const { user, load } = useStore()
+    const { user, global } = useStore()
 
     const submit = async () => {
         try {
-            load.setLoading(true);
+            global.setLoading(true);
+            global.setErrorLogin('');
             const { decodeUser } = await login(email, password);
-            user.setIsError('');
             user.setUser(decodeUser);
             user.setIsAuth(true);
             navigate(SHOP_ROUTE);
         } catch (e) {
-            user.setIsError(e.response.data.message)
+            global.setErrorLogin(e.response.data.message);
         } finally {
-            load.setLoading(false);
+            global.setLoading(false);
         }
     }
 
     const logOut = () => {
+        global.setErrorLogin('');
         user.setIsAuth(false)
         user.setUser({})
         localStorage.removeItem('token')
@@ -76,8 +77,8 @@ const Login = observer(() => {
                             placeholder="password" />
                     </Form.Group>
 
-                    {user.isError && <div className="error">
-                        {user.isError}
+                    {global.errorLogin && <div className="error">
+                        {global.errorLogin}
                     </div>}
 
                     <Form.Group

@@ -18,7 +18,7 @@ const DevicePage = observer(() => {
     let { id } = useParams();
 
     //подключение к Store
-    const { device, load } = useStore();
+    const { device, global } = useStore();
 
     //состояние для страницы
     const [item, setItem] = useState({ info: [] })
@@ -26,13 +26,14 @@ const DevicePage = observer(() => {
     //функция получения данных от сервера
     async function fetchDevice() {
         try {
-            load.setLoading(true);
+            global.setErrorDevice('')
+            global.setLoading(true);
             const device = await fetchOneDevice(id);
             setItem(device);
         } catch (e) {
-            device.setIsError(e.response.data.message)
+            global.setErrorDevice(e.response.data.message)
         } finally {
-            load.setLoading(false)
+            global.setLoading(false)
         }
     }
 
@@ -47,7 +48,9 @@ const DevicePage = observer(() => {
 
     return (
         <Container>
-            {device.isError && <div className='error'>{device.isError}</div>}
+            {global.errorDevice && <div className='error'>
+                {global.errorDevice}
+            </div>}
             <Row className='p-1'>
                 <Col md={6}>
                     <div className='d-flex justify-content-start align-items-center gap-2'>
