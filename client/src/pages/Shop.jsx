@@ -35,6 +35,11 @@ const Shop = observer(() => {
     //первая загрузка страницы
     useEffect(() => {
         fetchData()
+        //сброс выделенных типов и брендов при willunmount
+        return () => {
+            device.setSelectedType({});
+            device.setSelectedBrand({});
+        }
     }, [])
 
     return (

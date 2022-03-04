@@ -21,7 +21,7 @@ class DeviceController {
 
             //проверка если клиент указал info
             if (info) {
-                //с форонта будет приходить массив в формате json
+                //с фронта будет приходить массив в формате json
                 info = JSON.parse(info)
                 info.forEach(i => {
                     DeviceInfo.create({

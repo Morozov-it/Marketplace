@@ -6,8 +6,8 @@ export default class DeviceStore {
         this._types = []
         this._brands = []
         this._devices = []
-        this._selectedType = null
-        this._selectedBrand = null
+        this._selectedType = {}
+        this._selectedBrand = {}
         //параметром передается объект контекста this
         makeAutoObservable(this)
     }
@@ -22,11 +22,11 @@ export default class DeviceStore {
     setDevices(devices) {
         this._devices = devices
     }
-    setSelectedType(id) {
-        this._selectedType = id
+    setSelectedType(type) {
+        this._selectedType = type
     }
-    setSelectedBrand(id) {
-        this._selectedBrand = id
+    setSelectedBrand(brand) {
+        this._selectedBrand = brand
     }
 
     //геттеры для получения переменных из состояния, вызываются только если указанная переменная была изменена

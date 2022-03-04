@@ -16,11 +16,11 @@ const BrandBar = observer(() => {
                     style={{
                         cursor: "pointer",
                         width: 'auto',
-                        borderColor: device.selectedBrand === brand.id
+                        borderColor: device.selectedBrand.id === brand.id
                         ? '#0d6efd' : 'rgba(0,0,0,.125)'
                     }}
                     key={brand.id}
-                    onClick={()=> device.setSelectedBrand(brand.id) }
+                    onClick={()=> device.setSelectedBrand(brand) }
                 >{brand.name}</Card>
             )}
         </Row>
