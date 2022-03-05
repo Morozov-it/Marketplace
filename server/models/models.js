@@ -64,12 +64,16 @@ const TypeBrand = sequelize.define('type_brand', {
 User.hasOne(Basket)//пользователь имеет одну корзину
 Basket.belongsTo(User)//корзина принадлежит пользователю
 
+
 //один ко многим:
 User.hasMany(Rating)//пользователь делает много оценок
 Rating.belongsTo(User)//оценка принадлежит одному пользователю
 
-Basket.hasMany(BasketDevice)//корзина имеет много товаров
-BasketDevice.belongsTo(Basket)//товар принадлежит одной корзине
+Basket.hasMany(BasketDevice)//корзина имеет много элементов с товаром
+BasketDevice.belongsTo(Basket)//элемент с товаром принадлежит одной корзине
+
+Device.hasOne(BasketDevice)//
+BasketDevice.belongsTo(Device)//
 
 Type.hasMany(Device)//один тип имеет много девайсов
 Device.belongsTo(Type)//один девайс принадлежит конкретному типу
@@ -79,9 +83,6 @@ Device.belongsTo(Brand)//один девайс принадлежит конкр
 
 Device.hasMany(Rating)//один девайс имеет много оценок
 Rating.belongsTo(Device)//оценка принадлежит конкретному девайсу
-
-Device.hasMany(BasketDevice)//в корзине может быть много девайсов
-BasketDevice.belongsTo(Device)//
 
 Device.hasMany(DeviceInfo, { as: 'info' })//девайс имеет много информации
 //поле info у массива характеристик

@@ -40,7 +40,7 @@ class DeviceController {
     }
 
     //функция получения всех девайсов
-    async getAll(req, res) {
+    async getAll(req, res, next) {
         try {
             //для сортировки и пагинации получаем из параметров строки запроса
             let { brandId, typeId, limit, page } = req.query;
@@ -69,7 +69,7 @@ class DeviceController {
     }
 
     //функция получение конкретного девайса
-    async getOne(req, res) {
+    async getOne(req, res, next) {
         try {
             //получаем id из объекта параметров
             const { id } = req.params;
