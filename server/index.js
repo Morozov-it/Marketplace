@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const sequelize = require('./db');
-const models = require('./models/models');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const fileupload = require('express-fileupload');
 const router = require('./routes/index');
@@ -13,6 +13,9 @@ const PORT = process.env.PORT || 5000;
 
 //инициализация приложения
 const app = express();
+
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
 //создание корс-запросов для работы с браузером
 app.use(cors())

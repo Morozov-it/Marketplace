@@ -48,19 +48,16 @@ class BasketController {
         try {
             //получение данных о пользователе
             const user = req.user;
-            //получение данных о пользователе
-            const { id } = req.params;
-            console.log(id)
+            //получение данных об элементе
+            const { id } = req.body;
 
             //поиск корзины пользователя
             const basket = await Basket.findOne({ where: { userId: user.id } });
 
             //запрос на удаление
             const deleteItem = await BasketDevice.destroy(
-                {include: {
-                    basketId: basket.id,
-                }, where: {deviceId: id}})
-            
+                { where: { deviceId: id, basketId: basket.id } })
+            console.log(deleteItem)
             //возвращаем удаленный элемент
             return res.json(deleteItem)
         } catch (e) {
