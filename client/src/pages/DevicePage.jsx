@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { observer } from 'mobx-react-lite';
 import { useStore } from '../index';
 import { fetchOneDevice } from '../http/deviceAPI';
+import { addToBasket, fetchBasket } from '../http/basketAPI';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -18,7 +19,7 @@ const DevicePage = observer(() => {
     let { id } = useParams();
 
     //подключение к Store
-    const { device, global } = useStore();
+    const { basket, global } = useStore();
 
     //состояние для страницы
     const [item, setItem] = useState({ info: [] })
@@ -44,7 +45,22 @@ const DevicePage = observer(() => {
         return () => {
             setItem({ info: [] })
         }
-    }, [id])
+    }, [])
+
+    async function toBasket() {
+        try {
+            global.setErrorAddToBasket('');
+            global.setLoading(true);
+            await addToBasket({ deviceId: item.id });
+            const data = await fetchBasket();
+            basket.setItems(data);
+            alert(`Device added to basket`);
+        } catch (e) {
+            global.setErrorAddToBasket(e.response.data.message)
+        } finally {
+            global.setLoading(false)
+        }
+    }
 
     return (
         <Container>
@@ -58,22 +74,13 @@ const DevicePage = observer(() => {
                         <Rating rating={item.rating} />
                     </div>
                 </Col>
-                <Col md={6}>
-                    <div className='d-flex justify-content-between align-items-center gap-3'>
-                        <div className='fw-bold'>{item.price} ₽</div>
-                        <Button 
-                            variant="outline-primary">
-                            Add to basket
-                        </Button>
-                    </div>
-                </Col>
             </Row>
             <Row className='p-1'>
                 <Col md={6}>
                     <Card>
                         <div className='image'>
-                            <img alt='img'
-                                src={process.env.REACT_APP_URL + item.img} />
+                            {item.img && <img alt='img'
+                                src={process.env.REACT_APP_URL + item.img} />}
                         </div>
                     </Card>
                 </Col>
@@ -91,6 +98,22 @@ const DevicePage = observer(() => {
                             </div>
                         )}
                     </Card>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={6}>
+                    {global.errorAddToBasket &&
+                    <div className="error">
+                        {global.errorAddToBasket}
+                    </div>}
+                    <div>
+                        <div className='fw-bold'>{item.price} ₽</div>
+                        <Button 
+                            onClick={toBasket}
+                            variant="outline-primary">
+                            Add to basket
+                        </Button>
+                    </div>
                 </Col>
             </Row>
         </Container>

@@ -1,5 +1,5 @@
 const ApiError = require("../error/apiError");
-const { BasketDevice, Basket } = require('../models/models');
+const { Device, BasketDevice, Basket } = require('../models/models');
 
 
 class BasketController {
@@ -33,8 +33,11 @@ class BasketController {
             //поиск корзины пользователя
             const basket = await Basket.findOne({ where: { userId: id } });
 
-            //получение от бд корзины конкретного пользователя
-            const basketItems = await BasketDevice.findAll({ where: { basketId: basket.id } })
+            //получение от бд корзины конкретного пользователя c моделями указанных id
+            const basketItems = await BasketDevice.findAll({include: {
+                model: Device
+            }, where: { basketId: basket.id }
+            })
             
             //возвращаем корзину элементов
             return res.json(basketItems)
@@ -47,19 +50,19 @@ class BasketController {
     async remove(req, res, next) {
         try {
             //получение данных о пользователе
-            const user = req.user;
+            //const user = req.user;
             //получение данных об элементе
-            const { id } = req.body;
+            const {id} = req.params;
+            console.log(id)
 
             //поиск корзины пользователя
-            const basket = await Basket.findOne({ where: { userId: user.id } });
+            //const basket = await Basket.findOne({ where: { userId: user.id } })
 
             //запрос на удаление
-            const deleteItem = await BasketDevice.destroy(
-                { where: { deviceId: id, basketId: basket.id } })
-            console.log(deleteItem)
-            //возвращаем удаленный элемент
-            return res.json(deleteItem)
+            await BasketDevice.destroy({ where: { id } })
+
+            //ответ сервера
+            return res.json({message: "Deleting is success"})
         } catch (e) {
             next(ApiError.badRequest(e.message))
         }
@@ -67,3 +70,19 @@ class BasketController {
 }
 
 module.exports = new BasketController()
+
+
+
+//преобразование в массив с id и device
+// const devices = basketItems.map(item => {
+//     return {
+//         id: item.id,
+//         device: item.device
+//     }
+// })
+// // вычисление суммы в корзине
+// const summ = devices.reduce((acc, elem) => {
+//     return acc + elem.device.price
+// }, 0)
+// //возвращаем корзину элементов
+// return res.json({ devices, summ })

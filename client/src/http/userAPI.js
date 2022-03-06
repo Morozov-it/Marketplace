@@ -7,7 +7,7 @@ export const registration = async (email, password) => {
     const { data } = await $host.post('/user/registration', {
         email,
         password,
-        role: 'ADMIN'
+        role: ''//ADMIN
     })
 
     //возврат на клиент информации из токена

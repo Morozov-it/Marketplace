@@ -9,9 +9,11 @@ export default class GlobalStore {
         this._errorRegistration = ''
         this._errorShop = ''
         this._errorDevice = ''
+        this._errorBasket = ''
         this._errorCreateType = ''
         this._errorCreateBrand = ''
         this._errorCreateDevice = ''
+        this._errorAddToBasket = ''
         //параметром передается объект контекста this
         makeAutoObservable(this)
     }
@@ -35,6 +37,9 @@ export default class GlobalStore {
     setErrorDevice(error) {
         this._errorDevice = error
     }
+    setErrorBasket(error) {
+        this._errorBasket = error
+    }
     setErrorCreateType(error) {
         this._errorCreateType = error
     }
@@ -43,6 +48,9 @@ export default class GlobalStore {
     }
     setErrorCreateDevice(error) {
         this._errorCreateDevice = error
+    }
+    setErrorAddToBasket(error) {
+        this._errorAddToBasket = error
     }
 
     //геттеры для получения переменных из состояния, вызываются только если указанная переменная была изменена
@@ -64,6 +72,9 @@ export default class GlobalStore {
     get errorDevice() {
         return this._errorDevice
     }
+    get errorBasket() {
+        return this._errorBasket
+    }
     get errorCreateType() {
         return this._errorCreateType
     }
@@ -72,5 +83,8 @@ export default class GlobalStore {
     }
     get errorCreateDevice() {
         return this._errorCreateDevice
+    }
+    get errorAddToBasket() {
+        return this._errorAddToBasket
     }
 }

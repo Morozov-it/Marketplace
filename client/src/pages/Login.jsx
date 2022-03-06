@@ -17,7 +17,7 @@ const Login = observer(() => {
     const [password, setPassword] = useState('')
 
     //подключение к store
-    const { user, global } = useStore()
+    const { user, global, basket } = useStore()
 
     const submit = async () => {
         try {
@@ -28,17 +28,18 @@ const Login = observer(() => {
             user.setIsAuth(true);
             navigate(SHOP_ROUTE);
         } catch (e) {
-            global.setErrorLogin(e.response.data.message);
+            global.setErrorLogin(e.response.data.message)
         } finally {
-            global.setLoading(false);
+            global.setLoading(false)
         }
     }
 
     const logOut = () => {
         global.setErrorLogin('');
-        user.setIsAuth(false)
-        user.setUser({})
-        localStorage.removeItem('token')
+        user.setIsAuth(false);
+        user.setUser({});
+        basket.items([]);
+        localStorage.removeItem('token');
     }
 
     return (
